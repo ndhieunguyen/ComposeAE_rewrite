@@ -9,7 +9,7 @@ import time
 import test_retrieval
 import numpy as np
 import socket
-import datetime
+from datetime import datetime
 import os
 from torchsummary import summary
 
@@ -119,7 +119,6 @@ def create_model(opt):
 
     optimizer = torch.optim.Adam(params,
                                 lr=opt['learning_rate'],
-                                momentum=0.9,
                                 weight_decay=1e-6)
 
     return model, optimizer
@@ -268,9 +267,9 @@ def train_loop(opt, loss_weights, logger, trainset, testset, model, optimizer):
 
 if __name__ == '__main__':
     opt = {
-            'comment': None,
+            'comment': '',
             'dataset': 'fashion200k',
-            'dataset_path': None,
+            'dataset_path': '/content',
             'model': 'composeAE',
             'image_embed_dim': 512,
             'use_bert': False,
@@ -289,11 +288,11 @@ if __name__ == '__main__':
         }
 
     for k in opt.keys():
-        print('    ', k, ':', str(opt.__dict__[k]))
+        print('    ', k, ':', str(opt[k]))
 
     current_time = datetime.now().strftime('%b%d_%H-%M-%S')
     loss_weights = [1.0, 0.1, 0.1, 0.01]
-    logdir = os.path.join(opt.log_dir, current_time + '_' + socket.gethostname() + opt.comment)
+    logdir = os.path.join(opt['log_dir'], current_time + '_' + socket.gethostname() + opt['comment'])
     model, optimizer = create_model(opt)
     
-    summary(model, (3, 224, 224))
+    print(model)

@@ -18,6 +18,7 @@
 import numpy as np
 import PIL
 import skimage
+import os
 import torch
 import json
 import torch.utils.data
@@ -72,7 +73,7 @@ class Fashion200k(BaseDataset):
         self.img_path = path + '/'
 
         # get label files for the split
-        label_path = path + '/labels/'
+        label_path = os.path.join(path, 'labels')
         from os import listdir
         from os.path import isfile
         from os.path import join
@@ -127,7 +128,7 @@ class Fashion200k(BaseDataset):
         file2imgid = {}
         for i, img in enumerate(self.imgs):
             file2imgid[img['file_path']] = i
-        with open(self.img_path + '/test_queries.txt') as f:
+        with open(os.path.join(self.img_path, 'test_queries.txt')) as f:
             lines = f.readlines()
         self.test_queries = []
         for line in lines:
